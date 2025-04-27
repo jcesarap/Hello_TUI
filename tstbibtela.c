@@ -8,6 +8,8 @@ ASCII Characters: "┌", "┐", "┘", "└", "─", "│", "╔", "╗", "╝",
 
 // Libraries
 #include "src/bibtela.h"
+#include <ncurses.h>
+#include <stdio.h>
 #include <string.h>
 /*
   Pre-processor directives: Associate "variables" and integers (in this
@@ -51,6 +53,7 @@ int get_key(void);
 int menu_test(void);
 int draw_menu(button object[2][2]); // Matrices on functions require specifying their size and declaring the variabel itself - not just the type
 int redraw_menu(void);
+void user_input(void);
 // Screens
 void start_screen(void);
 void letter_hunt_screen(void);
@@ -65,23 +68,45 @@ char current_label[40];
 
 int main(void) {
   boot();
-  start_screen();
-  end_screen();
+  init_screen(25, 80);
+  // start_screen();
+  letter_hunt_screen();
   return 0;
 }
 
 void letter_hunt_screen() {
-  manual_draw_box();
-  manual_borders();
-  write_to(10, 15, "Escolha sua palavra:");
-  write_to(12, 15, "___________________");
-  cursor_to(12, 15);
-  navigation();
+  refresh();
+  user_input();
+}
+
+void user_input() {
+  initscr();
+  cbreak(); // Disable buffering - to avoid many problems you've encountered
+  echo();   // To show characters
+
+  // Parameters: height, width, y, x
+  WINDOW *win = newwin(20, 80, 1, 1);
+  //   Parameters: window (screen), row, column, string
+  mvwprintw(win, 1, 1, "———— Escolha palavra ———");
+  //   To move cursor of window to row, column
+  wmove(win, 2, 1);
+  wrefresh(win);
+
+  //
+  char input[100];
+  wgetnstr(win, input, sizeof(input));
+  mvwprintw(win, 2, 1, "You entered: %s", input);
+
+  wrefresh(win);
+  wgetch(win);
+  endwin();
+
+  return;
 }
 
 // right column, border type
 void start_screen() {
-  // printf("\e[?25l"); // hide cursor
+  printf("\e[?25l"); // hide cursor
   // Order for new screens: Buttons, draw_menu, borders, navigation
   // Buttons
   // Define "object" ("struct instance") properties
@@ -280,7 +305,6 @@ void boot() {
   setlocale(LC_ALL, "");
   setlocale(LC_CTYPE, "");
   // Start Screen
-  init_screen(25, 80);
   while (TRUE) {
     clear_screen();
     break;

@@ -27,8 +27,9 @@
 
 ## ⚙️ Compilation & Setup
 
-- Compile: make
-- Run: ./tstbibtela
+Compile: make
+
+Run: ./tstbibtela
 
 ## Other stuff
 - **License**: MIT  
