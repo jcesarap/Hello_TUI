@@ -8,6 +8,9 @@ This project is a **lightweight, C-based wrapper** around the `ncurses` library�
 ## ⏱️Pending
 - Personal: Study how to make libraries and how to setup their compilation with Cmake.
 - Project: Dynamic window positioning with `xprop`.
+- Refactor: 
+    - Use pointers to functions simplifying addition of screens.
+    - Use ncurses directly without wrappers.
 
 ## 🌐 Broader Context: Why Build a TUI Library?
 
@@ -111,7 +114,7 @@ It’s small, readable, and built to be hacked on.
 - Want to extend it into a full TUI framework? Fork and explore!  
 
 **License**: MIT  
-**Author**: Eleudson
+**Author**: Eleudson (& César... this refactored version)
 **Version**: 1.0.0
 
 Would you like this saved as a `.md`, `.pdf`, or `.html` file? I can also help you turn it into a GitHub `README` or generate diagrams for the architecture.

@@ -1,8 +1,9 @@
 /*
-Programa: Caça Letras
+Programa: Caça-Letras (e funcões abstratas para adições futuras)
 Nome: Júlio César de Amoraes Pinheiro
 ASCII Characters: "┌", "┐", "┘", "└", "─", "│", "╔", "╗", "╝", "╚", "═", "║",
 "█", "█", "█", "█", "█", "█"
+[PT-BR, IFCE]
 */
 
 // Libraries
@@ -29,12 +30,20 @@ ASCII Characters: "┌", "┐", "┘", "└", "─", "│", "╔", "╗", "╝",
 typedef struct {   // Structs are like a methods/classes - and this is its declaration
   char label[20];  // Text of the buttom, 20 characters max
   int row, column; // Position of the button
+  /* For later... (when you have time and can use ncurses directly - or better libs)
+    void (*action)(void); // function pointer (Add here)
+    start_menu[0][0].action = letter_hunt_screen; // (Add to button declarations)
+    // Add to navigation
+    button selected_button = start_menu[current_row][current_column];
+        if (selected_button.action) {
+          selected_button.action();
+        }
+  */
 } button;
 // --- Dependencies
 void boot(void);
 void draw_box(int ratio, int top, int left);
 void navigation(void);
-void flow(void);
 // Components
 void manual_draw_box(void);
 void manual_borders(void);
@@ -55,25 +64,25 @@ char current_label[40];
 // --- Functions
 
 int main(void) {
-  printf("\e[?25l"); // hide cursor
   boot();
   start_screen();
-  navigation();
   end_screen();
-  printf("\e[?25l"); // hide cursor
   return 0;
 }
 
 void letter_hunt_screen() {
   manual_draw_box();
   manual_borders();
+  write_to(10, 15, "Escolha sua palavra:");
+  write_to(12, 15, "___________________");
+  cursor_to(12, 15);
+  navigation();
 }
 
 // right column, border type
 void start_screen() {
-  // Draw
-  manual_draw_box();
-  manual_borders();
+  // printf("\e[?25l"); // hide cursor
+  // Order for new screens: Buttons, draw_menu, borders, navigation
   // Buttons
   // Define "object" ("struct instance") properties
   // Set text to a label (which requires strcpy function)
@@ -82,12 +91,12 @@ void start_screen() {
   start_menu[0][0].column = 15;
 
   // As well as its positions
-  strcpy(start_menu[0][1].label, "Option 2");
+  strcpy(start_menu[0][1].label, "Option_2");
   start_menu[0][1].row = 10;
   start_menu[0][1].column = 40;
 
   // Mnemonics: matrix coordinates.property = assigned_value
-  strcpy(start_menu[1][0].label, "Option 3");
+  strcpy(start_menu[1][0].label, "Option_3");
   start_menu[1][0].row = 15;
   start_menu[1][0].column = 15;
 
@@ -96,20 +105,26 @@ void start_screen() {
   start_menu[1][1].column = 40;
 
   draw_menu(start_menu);
+  navigation();
+  // printf("\e[?25l"); // hide cursor
 }
 
 void option_2_screen() {
   // Draw
+  clear_screen();
   manual_draw_box();
   manual_borders();
   write_to(10, 15, "Welcome to option 2");
+  navigation();
 }
 
 void option_3_screen() {
   // Draw
+  clear_screen();
   manual_draw_box();
   manual_borders();
   write_to(10, 15, "Welcome to option 3");
+  navigation();
 }
 
 void leave() { return; }
@@ -144,12 +159,14 @@ void manual_draw_box() {
 
 int draw_menu(button menu[][2]) { // Remember... button is the datatype, after it is the variable to be placeheld into logical operations
   clear_screen();
+  int row = 0, column = 0;
   // Iterate through columns and rows
-  for (int row = 0; row < 2; row++) {
-    for (int column = 0; column < 2; column++) {
-      strcpy(current_label, menu[row][column].label);
+  while (row < 2) {
+    column = 0; // To properly cycle between matrix
+    while (column < 2) {
       button_row = menu[row][column].row;
       button_column = menu[row][column].column;
+      strcpy(current_label, menu[row][column].label);
       if (row == current_row && column == current_column) {
         // Highlight selected button
         write_to(button_row, button_column, "> ");
@@ -159,7 +176,9 @@ int draw_menu(button menu[][2]) { // Remember... button is the datatype, after i
         write_to(button_row, button_column, "  ");
         write_to(button_row, button_column + 2, current_label);
       }
+      column++;
     }
+    row++;
   }
   return 0;
 }
@@ -219,25 +238,21 @@ void navigation() {
       }
       break;
     case ENTER:
-      // execute_action();
-      flow();
+      clear_screen();
+      button selected_button = start_menu[current_row][current_column];
+      if (strcmp(selected_button.label, "Caça-palavras") == 0) {
+        letter_hunt_screen();
+      } else if (strcmp(selected_button.label, "Option_2") == 0) {
+        option_2_screen();
+      } else if (strcmp(selected_button.label, "Option_3") == 0) {
+        option_3_screen();
+      } else if (strcmp(selected_button.label, "Leave") == 0) {
+        return;
+      }
+      // After handling ENTER, redraw the menu to return to it
+      break;
     }
     draw_menu(start_menu);
-  }
-}
-
-// "Asynchronously" called by navigation()
-void flow(void) {                                                       // Reminder: strcmp returns 0 or 1, which needs be compared to such, in order for the control flow to work
-  strcpy(current_label, start_menu[current_row][current_column].label); // update for current before analysing
-  clear_screen();
-  if (strcmp(current_label, "Caça-palavras") == 0) { // Caça-palavras
-    letter_hunt_screen();
-  } else if (strcmp(current_label, "Option 2") == 0) { // Option 2
-    option_2_screen();
-  } else if (strcmp(current_label, "Option 3") == 0) { // Option 3
-    option_3_screen();
-  } else if (strcmp(current_label, "Leave") == 0) { // Leave
-    return;
   }
 }
 
