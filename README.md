@@ -1,4 +1,5 @@
 # Terminal-Based ASCII UI Library
+> Low level.
 
 ## 🧩 Overview
 
@@ -26,9 +27,10 @@
 
 ## ⚙️ Compilation & Setup
 
-Compile: make
-Run: ./tstbibtela
+- Compile: make
+- Run: ./tstbibtela
 
-**License**: MIT  
-**Author**: Eleudson, César
-**Version**: 1.5.0
+## Other stuff
+- **License**: MIT  
+- **Author**: Eleudson, César
+- **Version**: 1.5.0
