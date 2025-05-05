@@ -2,10 +2,18 @@
 > Low level.
 
 ## 🧩 Overview
-
 - "Simplified" wrapper around `ncurses`.
 - Meant for TUIs.
 - Uses grid for output, ASCII art.
+
+## 📚 Assignment 
+- Read word
+- Read where to show word on 25,80 dimensions (and show)
+- Loop until all letters are ×
+- Read a letter
+    - If exists on word, change letter to ×
+       - Otherwise warn
+
 
 ## ⏱️ Pending
 - Before anything else: Use ncurses directly without wrappers.
@@ -18,7 +26,6 @@
     - Use pointers to functions simplifying addition of screens.
 
 ## 📦 Project Structure
-
 | File        | Description                                       |
 |-------------|---------------------------------------------------|
 | `bibtela.h` | Public header: function declarations and includes |
@@ -26,10 +33,8 @@
 | `main.c`    | Example usage showcasing the library’s functions  |
 
 ## ⚙️ Compilation & Setup
-
-Compile: make
-
-Run: ./tstbibtela
+- Compile: make
+- Run: ./tstbibtela
 
 ## Other stuff
 - **License**: MIT  
