@@ -42,7 +42,7 @@ void word_hunt() {
   prompt_screen();
   target_word();
   query_characters();
-  xyprint(17, 3, "Parabéns!");
+  xyprint(coordenada_1 + 2, coordenada_2 + 2, "🥳 Parabéns - Você achou todas as letras!");
   scanf(" %c", &key);
 }
 void word_screen() {
@@ -52,16 +52,18 @@ void word_screen() {
   scanf(" %c", &key);
 }
 void prompt_screen() {
-  // xywindow(0, 0, 24, 79, 2);
-  xyprint(1, 3, "Escolha uma palavra: ");
-  xyscanfstr(2, 3, "%s", palavra);
+  xywindow(1, 1, 5, 30, 2);
+  xyprint(2, 3, "📖 Escolha uma palavra ");
+  xyscanfstr(3, 3, "%s", palavra);
   // copia para target para manter a original
   strcpy(target, palavra);
-  xyprint(7, 3, "Escolha a coordenada 1: ");
+  xywindow(6, 1, 10, 30, 2); // start line, start column, end line, end column
+  xyprint(7, 3, "📍 Escolha a coordenada 1 ");
   xyscanfint(8, 3, "%d", &coordenada_1);
   // xyprintint(9, 3, coordenada_1);
-  xyprint(10, 3, "Escolha a coordenada 2: ");
-  xyscanfint(11, 3, "%d", &coordenada_2);
+  xywindow(11, 1, 15, 30, 2); // start line, start column, end line, end column
+  xyprint(12, 3, "📍 Escolha a coordenada 2 ");
+  xyscanfint(13, 3, "%d", &coordenada_2);
   // xyprintint(12, 3, coordenada_2);
   if (coordenada_1 > 79 || coordenada_1 < 0 || coordenada_2 > 24 || coordenada_2 < 0) {
     invalid_screen();
@@ -78,8 +80,9 @@ void query_characters() { // I know I could move variables through parameters, t
   while (1) {
     clear_screen();
     char ch;
-    xyprint(4, 3, "Escolha um caractere: ");
-    ch = xygetch(5, 3);
+    xywindow(6, 1, 10, 31, 2); // start line, start column, end line, end column
+    xyprint(7, 3, "Escolha um caractere ");
+    ch = xygetch(8, 3);
     int len = strlen(target);
     int found = 0;
     for (int i = 0; i < len; i++) {
@@ -99,12 +102,14 @@ void query_characters() { // I know I could move variables through parameters, t
 }
 void warning_screen() {
   clear_screen();
-  xyprint(7, 3, "Caractere não encontrado (aperte qualquer letra para continuar)");
+  xywindow(6, 1, 10, 70, 2); // start line, start column, end line, end column
+  xyprint(7, 3, "❌ Caractere não encontrado (aperte qualquer letra para continuar)");
   scanf(" %c", &key);
 }
 void invalid_screen() {
   clear_screen();
-  xyprint(10, 10, "Coordenadas inválidas... \n Escolha entre 0-24 para coordenada 1, e 0-79 para coordenada 2.");
+  xywindow(6, 1, 10, 70, 2); // start line, start column, end line, end column
+  xyprint(7, 3, "❌ Coordenadas inválidas... \n Escolha entre 0-24 para coordenada 1, e 0-79 para coordenada 2.");
   scanf(" %c", &key);
   exit(0);
 }
