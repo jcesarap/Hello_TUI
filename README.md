@@ -14,6 +14,8 @@
     - If exists on word, change letter to ×
        - Otherwise warn
 
+## Errors
+- Cover wrong fillings of data type and empty responses
 
 ## ⏱️ Pending
 - Before anything else: Use ncurses directly without wrappers.
@@ -33,8 +35,8 @@
 | `main.c`    | Example usage showcasing the library’s functions  |
 
 ## ⚙️ Compilation & Setup
-- Compile: make
-- Run: ./tstbibtela
+Compile: make
+Run: ./tstbibtela
 
 ## Other stuff
 - **License**: MIT  
